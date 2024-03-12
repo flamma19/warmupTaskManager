@@ -19,8 +19,7 @@ def create_database_engine():
     return engine
 
 
-SessionLocal = sessionmaker(
-    autocommit=False, autoflush=False, bind=create_database_engine())
+SessionLocal = sessionmaker(bind=create_database_engine(), expire_on_commit=False)
 
 
 def get_db():
