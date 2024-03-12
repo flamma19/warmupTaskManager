@@ -28,7 +28,7 @@ target_metadata = Base.metadata
 
 
 def get_url():
-    return os.getenv("DATABASE_URL")
+    return os.getenv("DATABASE_URL").replace('psycopg2', 'asyncpg')
 
 
 def run_migrations_offline():
@@ -68,6 +68,7 @@ async def run_migrations_online():
     configuration = config.get_section(config.config_ini_section)
     configuration["sqlalchemy.url"] = get_url()
     connectable = async_engine_from_config(
+
         configuration,
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
