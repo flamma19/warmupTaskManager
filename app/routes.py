@@ -4,6 +4,7 @@ from db import get_db
 from sqlalchemy.orm import Session
 from schemas import ResponseTask, PostTask, EditTask
 import crud
+from datetime import date
 
 router = APIRouter(
     prefix='/tasks',
@@ -11,8 +12,18 @@ router = APIRouter(
 
 
 @router.get('/', response_model=List[ResponseTask])
-async def get_tasks(db: Session = Depends(get_db)):
-    tasks = crud.get_all_tasks(db)
+async def get_tasks(db: Session = Depends(get_db),
+                    title: str | None = None,
+                    description: str | None = None,
+                    done: bool | None = None,
+                    creation_date_begin: date | None = None,
+                    creation_date_end: date | None = None,
+                    due_date_begin: date | None = None,
+                    due_date_end: date | None = None
+                    ):
+    tasks = crud.get_all_tasks(db, title, description, done,
+                               creation_date_begin, creation_date_end,
+                               due_date_begin, due_date_end)
     if tasks:
         return tasks
     else:
