@@ -1,25 +1,25 @@
 from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
-from datetime import datetime
+from datetime import datetime, date
 
 
 class BaseTask(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
     title: str
-    description: Optional[str]
-    due_date: Optional[datetime]
+    description: str | None = None
+    due_date: date | None = None
 
-
+    class Config:
+        from_attributes = True
 class PostTask(BaseTask):
     pass
 
 
 class ResponseTask(BaseTask):
     id: int
-    creation_date: datetime
-    status: bool
+    creation_date: date
+    done: bool
 
 
 class EditTask(BaseTask):
     title: Optional[str]
-    status: Optional[bool]
+    done: Optional[bool]
